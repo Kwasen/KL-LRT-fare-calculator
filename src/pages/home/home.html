@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      LRT Calculator
+    </ion-title>
+    <ion-buttons end>
+      <button (click)="goToAbout()" ion-button icon-only>
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content" padding>
+  <ion-list *ngIf="lrtStations">
+    <ion-list-header>Select LRT Stations</ion-list-header>
+
+    <ion-item>
+      <ion-label>From</ion-label>
+      <ion-select [(ngModel)]="locationFrom" okText="Okay" cancelText="Dismiss" (ionChange)="locationFromChanged($event)">
+        <ion-option *ngFor="let lrtStation of lrtStations" [value]="lrtStation">{{lrtStation.stop_name}} <span [style.color]="lrtStation.rail_color">({{ lrtStation.route_short_name }})</span></ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>To</ion-label>
+      <ion-select [(ngModel)]="locationTo" okText="Okay" cancelText="Dismiss" (ionChange)="locationToChanged($event)">
+        <ion-option *ngFor="let lrtStation of lrtStations" [value]="lrtStation">{{lrtStation.stop_name}} <span [style.color]="lrtStation.rail_color">({{ lrtStation.route_short_name }})</span></ion-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+
+  <div *ngIf="locationFrom && locationTo" class="calculate-button">
+    <button (click)="calculateFare()" ion-button icon-only>
+          <ion-icon name="search"></ion-icon>Get Fare &nbsp;&nbsp;
+    </button>
+  </div>
+
+  <ion-card-content *ngIf="locationFromFullDetails || locationToFullDetails" padding>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngIf="locationFromFullDetails">
+          <h5>{{ locationFromFullDetails.stop_name }} ({{ locationFromFullDetails.route_long_name}})</h5>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="locationFromFullDetails">To</ion-row>
+      <ion-row *ngIf="locationToFullDetails">
+        <ion-col>
+          <h5>{{ locationToFullDetails.stop_name }} ({{ locationToFullDetails.route_long_name}})</h5>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+
+  <ion-card *ngIf="lrtFareData">
+    <ion-card-header text-center>
+      Fare Breakdown
+    </ion-card-header>
+    <ion-card-content>
+      <div class="card-item">
+        <span ion-text color="primary">Cash: </span> {{ lrtFareData.fares.cash | currency:'MYR' }}
+      </div>
+    </ion-card-content>
+    <ion-card-content>
+      <div class="card-item">
+        <span ion-text color="primary">Cashless: </span> {{ lrtFareData.fares.cashless | currency:'MYR' }}
+      </div>
+    </ion-card-content>
+    <ion-card-content>
+      <div class="card-item">
+        <span ion-text color="primary">Consession: </span> {{ lrtFareData.fares.consession | currency:'MYR' }}
+      </div>
+    </ion-card-content>
+    <ion-card-content>
+      <div class="card-item">
+        <span ion-text color="primary">Weekly: </span> {{ lrtFareData.fares.weekly | currency:'MYR' }}
+      </div>
+    </ion-card-content>
+    <ion-card-content>
+      <div class="card-item">
+        <span ion-text color="primary">Monthly: </span> {{ lrtFareData.fares.monthly | currency:'MYR' }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

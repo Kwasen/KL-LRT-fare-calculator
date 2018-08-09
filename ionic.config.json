@@ -1,0 +1,13 @@
+{
+  "name": "KL-LRT-Fare-Calculator",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "https://www.myrapid.com.my/clients/Myrapid_Prasarana_37CB56E7-2301-4302-9B98-DFC127DD17E9/api"
+    }
+  ]
+}
